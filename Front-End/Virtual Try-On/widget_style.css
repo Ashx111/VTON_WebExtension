@@ -1,0 +1,410 @@
+/* widget_style.css - v1.8 */
+/* Define color theme and base styles */
+:root {
+    --vto-primary-color: #5E35B1; /* Slightly softer Purple */
+    --vto-accent-color: #1E88E5; /* Slightly softer Blue */
+    --vto-gradient: linear-gradient(to right, var(--vto-primary-color), var(--vto-accent-color));
+    --vto-bg-light: #ffffff;
+    --vto-bg-medium: #f9fafb; /* Slightly off-white */
+    --vto-border-color: #e5e7eb; /* Lighter border */
+    --vto-text-dark: #1f2937; /* Darker Gray */
+    --vto-text-medium: #4b5563; /* Medium Gray */
+    --vto-text-light: #f9fafb;
+    --vto-success-color: #10B981; /* Tailwind Green */
+    --vto-warning-color: #F59E0B; /* Tailwind Amber */
+    --vto-error-color: #EF4444; /* Tailwind Red */
+    --vto-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+    --vto-border-radius: 6px; /* Slightly smaller radius */
+}
+
+/* Base Widget Container */
+#virtualTryOnWidget {
+    position: fixed;
+    top: 70px;
+    right: 15px;
+    background-color: var(--vto-bg-light);
+    border: 1px solid var(--vto-border-color);
+    border-radius: var(--vto-border-radius);
+    padding: 20px 25px; /* More horizontal padding */
+    box-shadow: var(--vto-box-shadow);
+    z-index: 10001;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* System fonts */
+    width: 350px; /* Slightly wider */
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    color: var(--vto-text-dark);
+    transition: box-shadow 0.3s ease;
+}
+#virtualTryOnWidget:hover {
+     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Slightly larger shadow on hover */
+}
+
+
+/* Scrollbar styling */
+#virtualTryOnWidget::-webkit-scrollbar {
+    width: 8px;
+}
+#virtualTryOnWidget::-webkit-scrollbar-track {
+    background: var(--vto-bg-medium);
+    border-radius: 4px;
+}
+#virtualTryOnWidget::-webkit-scrollbar-thumb {
+    background-color: var(--vto-primary-color);
+    border-radius: 4px;
+    border: 2px solid var(--vto-bg-medium); /* Add border for contrast */
+    background-clip: padding-box;
+    opacity: 0.8;
+}
+#virtualTryOnWidget::-webkit-scrollbar-thumb:hover {
+    opacity: 1;
+}
+
+/* Headings */
+#virtualTryOnWidget h4, #virtualTryOnWidget h5 {
+    text-align: center;
+    margin-top: 5px; /* Reduced top margin */
+    margin-bottom: 20px; /* Increased bottom margin */
+    color: var(--vto-primary-color);
+    font-weight: 600;
+    font-size: 1.2em; /* Slightly larger */
+}
+#virtualTryOnWidget h5 { /* History heading smaller */
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+/* Buttons General Styling */
+#virtualTryOnWidget button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 10px; /* Increased spacing */
+    border: none;
+    border-radius: var(--vto-border-radius);
+    cursor: pointer;
+    font-size: 0.95rem; /* Slightly smaller font */
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    text-align: center;
+}
+#virtualTryOnWidget button:not(:disabled):hover { /* Apply hover only if not disabled */
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+#virtualTryOnWidget button:not(:disabled):active {
+    transform: translateY(0px);
+    box-shadow: none;
+}
+#virtualTryOnWidget button:disabled {
+    opacity: 0.5; /* More pronounced disabled state */
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* Specific Button Styles */
+/* Standard Action / Upload Buttons */
+#vtoChoiceNew, #vtoChoiceHistory, #vtoUploadHumanBtn, #vtoUploadGarmentBtn {
+    background-color: var(--vto-bg-light);
+    color: var(--vto-primary-color);
+    border: 1px solid var(--vto-border-color);
+    font-weight: 600;
+}
+#vtoChoiceNew:not(:disabled):hover, #vtoChoiceHistory:not(:disabled):hover,
+#vtoUploadHumanBtn:not(:disabled):hover, #vtoUploadGarmentBtn:not(:disabled):hover {
+    background-color: var(--vto-bg-medium);
+    border-color: #d1d5db; /* Slightly darker border on hover */
+}
+
+/* Primary Call to Action Button */
+#vtoTryOnBtn {
+    background-image: var(--vto-gradient);
+    color: var(--vto-text-light);
+    font-weight: bold;
+    margin-top: 20px; /* More space above */
+    padding: 12px 15px; /* Larger padding */
+    font-size: 1.05rem;
+}
+#vtoTryOnBtn:not(:disabled):hover {
+    background-image: linear-gradient(to right, #512DA8, #1976D2); /* Darker gradient */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Cancel / Destructive Buttons */
+#vtoCancelBtn, #vtoClearHistoryBtn {
+    color: var(--vto-text-dark); /* Darker text for warning/error */
+    font-weight: 500;
+}
+#vtoCancelBtn { background-color: var(--vto-warning-color); }
+#vtoClearHistoryBtn { background-color: var(--vto-error-color); color: var(--vto-bg-light); margin-top: 20px; }
+
+#vtoCancelBtn:not(:disabled):hover { background-color: #FBBF24; } /* Lighter warning */
+#vtoClearHistoryBtn:not(:disabled):hover { background-color: #F87171; } /* Lighter error */
+
+/* Back Buttons */
+#vtoBackButton, #vtoHistoryBackButton {
+    width: auto;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    margin-bottom: 20px; /* More space after */
+    display: inline-block;
+    background-color: transparent;
+    color: var(--vto-text-medium);
+    border: 1px solid transparent; /* Keep layout consistent */
+}
+#vtoBackButton:not(:disabled):hover, #vtoHistoryBackButton:not(:disabled):hover {
+    background-color: var(--vto-bg-medium);
+    border-color: var(--vto-border-color);
+    color: var(--vto-text-dark);
+    box-shadow: none; /* No shadow for back buttons */
+    transform: none;
+}
+
+/* Remove Buttons (Text-like) */
+#vtoRemoveHumanBtn, #vtoRemoveGarmentBtn {
+    background: none;
+    border: none;
+    color: var(--vto-error-color);
+    font-size: 0.8em;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 3px 0; /* Vertical padding only */
+    margin-top: 8px; /* Space above */
+    width: auto;
+    display: inline-block;
+    box-shadow: none;
+    text-align: left; /* Align left under preview */
+    margin-bottom: 0; /* Reset bottom margin */
+}
+#vtoRemoveHumanBtn:hover, #vtoRemoveGarmentBtn:hover {
+    color: #DC2626; /* Darker red */
+    transform: none;
+    box-shadow: none;
+    background: none; /* Ensure no background on hover */
+}
+
+/* Form Elements */
+#virtualTryOnWidget label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500; /* Slightly lighter label */
+    color: var(--vto-text-medium);
+    font-size: 0.9rem;
+}
+
+#virtualTryOnWidget input[type="text"],
+#virtualTryOnWidget input[type="number"],
+#virtualTryOnWidget select {
+    width: 100%;
+    padding: 9px 12px; /* Adjust padding */
+    margin-bottom: 16px; /* More space below inputs */
+    border: 1px solid var(--vto-border-color);
+    border-radius: var(--vto-border-radius);
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    background-color: var(--vto-bg-light); /* Ensure bg color */
+    color: var(--vto-text-dark);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+#virtualTryOnWidget input[type="text"]:focus,
+#virtualTryOnWidget input[type="number"]:focus,
+#virtualTryOnWidget select:focus {
+    border-color: var(--vto-primary-color);
+    box-shadow: 0 0 0 3px rgba(94, 53, 177, 0.15); /* Adjusted focus ring */
+    outline: none;
+}
+#virtualTryOnWidget input[type="number"] {
+     width: 90px; /* Slightly wider number input */
+}
+#virtualTryOnWidget select {
+    appearance: none; /* Custom dropdown arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234B5563%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 8px 10px;
+    padding-right: 30px; /* Space for arrow */
+}
+
+
+/* Input Sections */
+#virtualTryOnWidget .vto-input-section {
+    margin-bottom: 25px; /* More space between sections */
+    padding-bottom: 20px; /* More padding at bottom */
+    border-bottom: 1px solid var(--vto-border-color); /* Solid, lighter border */
+}
+#virtualTryOnWidget .vto-input-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 15px; /* Less margin if it's the last one */
+}
+
+
+/* --- Image Previews (Larger) --- */
+#vtoHumanPreview, #vtoGarmentPreview {
+    display: none; /* Hidden initially */
+    width: 100%; /* Use full width */
+    max-width: 100%; /* Ensure it doesn't overflow */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 250px; /* Increase max-height limit */
+    object-fit: contain;
+    margin-top: 15px; /* More space above preview */
+    border-radius: var(--vto-border-radius);
+    border: 1px solid var(--vto-border-color);
+    background-color: var(--vto-bg-medium); /* Background for empty space */
+}
+
+/* Drop Zone */
+#vtoGarmentDropZone {
+    border: 2px dashed var(--vto-accent-color);
+    padding: 30px 15px; /* More padding */
+    text-align: center;
+    margin-top: 15px;
+    border-radius: var(--vto-border-radius);
+    cursor: pointer;
+    font-size: 0.9rem; /* Slightly smaller text */
+    color: var(--vto-text-medium);
+    background-color: var(--vto-bg-light); /* Use light background */
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    line-height: 1.4;
+}
+#vtoGarmentDropZone.dragover {
+    background-color: #E3F2FD; /* Lighter blue */
+    border-color: var(--vto-primary-color);
+    color: var(--vto-primary-color); /* Change text color on hover */
+}
+
+/* Status Area */
+#vtoStatus {
+    margin-top: 25px; /* More space above status */
+    text-align: center;
+    font-size: 0.9rem;
+    min-height: 36px; /* Ensure consistent height */
+    word-wrap: break-word;
+    padding: 8px 12px; /* Adjust padding */
+    border-radius: var(--vto-border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+    opacity: 0; /* Start hidden */
+    visibility: hidden; /* Use visibility for better transitions */
+}
+/* Show status only when it has a class */
+#vtoStatus[class*="vto-status-"] {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Status message variants */
+.vto-status-info { color: #3B82F6; background-color: #EFF6FF; } /* Blue */
+.vto-status-success { color: #059669; background-color: #ECFDF5; } /* Green */
+.vto-status-warning { color: #D97706; background-color: #FFFBEB; } /* Amber */
+.vto-status-error { color: #DC2626; background-color: #FEF2F2; } /* Red */
+.vto-status-loading { color: var(--vto-primary-color); background-color: #F3E8FF; } /* Purple */
+
+
+/* Loading Spinner */
+.vto-spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1); /* Lighter border */
+    border-top-color: var(--vto-primary-color); /* Use theme color */
+    border-radius: 50%;
+    width: 18px; /* Slightly larger */
+    height: 18px;
+    animation: spin 0.8s linear infinite;
+    display: none; /* JS controls display via status class */
+}
+.vto-status-loading .vto-spinner { /* Show spinner only with loading class */
+    display: inline-block;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --- Result Area (Larger Images) --- */
+#vtoResultArea {
+    margin-top: 25px;
+    border-top: 1px solid var(--vto-border-color);
+    padding-top: 25px;
+    display: flex;
+    flex-direction: column; /* Stack results vertically */
+    gap: 15px; /* Space between result images */
+    align-items: center; /* Center results */
+}
+#vtoResultArea img {
+    width: 100%; /* Use full width */
+    max-width: 100%; /* Prevent overflow */
+    height: auto; /* Maintain aspect ratio */
+    border: 1px solid var(--vto-border-color);
+    border-radius: var(--vto-border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+    background-color: var(--vto-bg-medium); /* Placeholder background */
+}
+#vtoResultArea img[alt^="Loading"],
+#vtoResultArea img[alt^="Failed"] {
+     filter: grayscale(60%) opacity(80%); /* Subtle effect for loading/failed */
+}
+
+
+/* History View */
+#vtoHistoryList {
+    font-size: 0.9rem;
+    max-height: 450px; /* Allow more height */
+    overflow-y: auto;
+    padding-right: 8px; /* Space for scrollbar */
+    margin-top: 10px; /* Space below heading */
+}
+#vtoHistoryList .vto-history-entry {
+    border-bottom: 1px solid var(--vto-border-color);
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+#vtoHistoryList .vto-history-entry:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+#vtoHistoryList .vto-history-previews {
+    display: flex;
+    gap: 10px; /* More gap */
+    margin-bottom: 10px;
+}
+#vtoHistoryList .vto-history-previews img {
+    width: 50px; /* Slightly larger history previews */
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--vto-border-color);
+}
+#vtoHistoryList .vto-history-params {
+    font-size: 0.75em; /* Smaller param text */
+    color: var(--vto-text-medium);
+    margin-bottom: 10px;
+    word-break: break-word; /* Use break-word */
+    line-height: 1.3;
+}
+#vtoHistoryList .vto-history-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+#vtoHistoryList .vto-history-results img {
+    max-width: 75px; /* Slightly larger result thumbs */
+    border-radius: 4px;
+    border: 1px solid var(--vto-border-color);
+}
+#vtoHistoryList div:empty {
+    color: var(--vto-text-medium);
+    text-align: center;
+    padding: 25px;
+    font-style: italic;
+}
+
+
+/* View Switching Default States */
+#vtoInitialChoice {
+    display: block;
+}
+#vtoMainContent,
+#vtoHistoryContent {
+    display: none;
+}

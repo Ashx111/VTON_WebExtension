@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VTO Widget Settings</title>
+  <!-- Link the shared widget style for consistency -->
+  <link rel="stylesheet" href="widget_style.css">
+  <style>
+    /* Popup specific styles */
+    body {
+      width: 320px; /* Match widget width */
+      padding: 15px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h2, h3 {
+        color: var(--vto-primary-color);
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    #content p, #clothesStatus {
+        text-align: center;
+        font-size: 0.9em;
+        color: var(--vto-text-medium);
+        min-height: 1.2em; /* Prevent layout shifts */
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+    #preview, #clothesPreview {
+        display: none; /* Hidden initially */
+        max-width: 100%;
+        max-height: 150px;
+        object-fit: contain;
+        margin: 10px auto; /* Center preview */
+        border-radius: var(--vto-border-radius);
+        border: 1px solid var(--vto-border-color);
+    }
+    #buttonContainer {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    /* Use button styles from widget_style.css by adding classes in JS if needed */
+    /* Or define specific popup button styles */
+    button {
+        /* Using default styles from widget_style.css */
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+    /* Style for clothes section similar to widget sections */
+    #clothesSection {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px dashed var(--vto-border-color);
+        display: none; /* Hidden until user image is uploaded */
+    }
+     /* Style drop zone using widget styles */
+    #clothesDropZone {
+         border: 2px dashed var(--vto-accent-color);
+         padding: 20px 15px;
+         text-align: center;
+         margin-top: 10px;
+         border-radius: var(--vto-border-radius);
+         cursor: pointer;
+         font-size: 0.95rem;
+         color: var(--vto-text-medium);
+         background-color: var(--vto-bg-medium);
+         transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    #clothesDropZone.dragover {
+         background-color: #e3f2fd;
+         border-color: var(--vto-primary-color);
+    }
+    .note {
+        font-size: 0.8em;
+        color: var(--vto-text-medium);
+        text-align: center;
+        margin-top: 5px;
+        font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="content">
+    <!-- Content will be managed by popup.js based on site validity -->
+  </div>
+
+  <!-- Hidden structure for allowed sites -->
+  <div id="widgetControls" style="display: none;">
+      <h2>Your Default Image</h2>
+      <p class="note">Upload your photo here. The widget on the page will use this image automatically.</p>
+      <button id="uploadBtn">Upload Your Photo</button>
+      <input type="file" id="fileInput" accept="image/*" style="display: none;">
+      <p id="status"></p>
+      <img id="preview" src="">
+      <div id="buttonContainer">
+        <!-- Remove button will be shown/hidden by JS -->
+        <button id="removeBtn" style="display: none;">Remove Stored Image</button>
+        <!-- Removed the confusing "Try On" button -->
+      </div>
+
+      <!-- Section for Clothes Image Preview (Popup Only) -->
+      <div id="clothesSection">
+          <h3>Garment Preview (Popup)</h3>
+           <p class="note">You can preview a garment image here, but the actual try-on uses images added via the page widget.</p>
+          <div id="clothesDropZone">Drag & Drop Garment Image Here</div>
+          <input type="file" id="clothesFileInput" accept="image/*" style="display: none;">
+          <button id="clothesSelectBtn">Or Select Garment File</button>
+          <p id="clothesStatus"></p>
+          <img id="clothesPreview" src="">
+          <button id="removeClothesBtn" style="display: none;">Remove Preview</button>
+      </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

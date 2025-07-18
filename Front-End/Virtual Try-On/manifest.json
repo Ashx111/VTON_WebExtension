@@ -1,0 +1,52 @@
+{
+    "manifest_version": 3,
+    "name": "VTO Widget - Stylish Edition",
+    "version": "1.6",
+    "description": "Try clothes virtually on shopping sites with a beautiful interface.",
+    "permissions": [
+      "storage",      
+      "activeTab"     
+     ],
+    "host_permissions": [
+      "*://*.amazon.com/*",
+      "*://*.amazon.co.uk/*",
+      "*://*.amazon.in/*",
+      "*://*.myntra.com/*",
+      "*://*.ajio.com/*",
+      "*://*.flipkart.com/*",
+      "https://*.ngrok-free.app/*"
+    ],
+    "icons": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "content_scripts": [
+      {
+        "matches": [
+          "*://*.amazon.com/*",
+          "*://*.amazon.co.uk/*",
+          "*://*.amazon.in/*",
+          "*://*.myntra.com/*",
+          "*://*.ajio.com/*",
+          "*://*.flipkart.com/*"
+        ],
+        "js": ["start.js"],
+        "css": ["style.css"],
+        "run_at": "document_idle"
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["widget_style.css", "icons/*"],
+        "matches": ["<all_urls>"]
+      }
+    ],
+     "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png"
+      }
+    }
+  }

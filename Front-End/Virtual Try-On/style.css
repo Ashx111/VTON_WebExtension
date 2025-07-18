@@ -1,0 +1,439 @@
+/* widget_style.css - v1.10 */
+/* Define color theme and base styles */
+:root {
+    --vto-primary-color: #5E35B1; /* Slightly softer Purple */
+    --vto-accent-color: #1E88E5; /* Slightly softer Blue */
+    --vto-gradient: linear-gradient(to right, var(--vto-primary-color), var(--vto-accent-color));
+    --vto-bg-light: #ffffff;
+    --vto-bg-medium: #f9fafb; /* Slightly off-white */
+    --vto-border-color: #e5e7eb; /* Lighter border */
+    --vto-text-dark: #1f2937; /* Darker Gray */
+    --vto-text-medium: #4b5563; /* Medium Gray */
+    --vto-text-light: #f9fafb;
+    --vto-success-color: #10B981; /* Tailwind Green */
+    --vto-warning-color: #F59E0B; /* Tailwind Amber */
+    --vto-error-color: #EF4444; /* Tailwind Red */
+    --vto-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+    --vto-box-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --vto-border-radius: 6px; /* Slightly smaller radius */
+}
+
+/* Base Widget Container */
+#virtualTryOnWidget {
+    position: fixed;
+    /* Initial position set by JS, fallback CSS */
+    top: 70px;
+    left: calc(100vw - 350px - 30px); /* Approx right: 15px for 350px width */
+    width: 350px;
+    background-color: var(--vto-bg-light);
+    border: 1px solid var(--vto-border-color);
+    border-radius: var(--vto-border-radius);
+    /* Padding moved to inner container */
+    box-shadow: var(--vto-box-shadow);
+    z-index: 10001;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* System fonts */
+    color: var(--vto-text-dark);
+    overflow: hidden; /* Hide overflow initially, child will scroll */
+    display: flex; /* Use flex for layout */
+    flex-direction: column;
+    transition: box-shadow 0.3s ease, height 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+}
+#virtualTryOnWidget:hover {
+     box-shadow: var(--vto-box-shadow-hover);
+}
+
+/* --- NEW: Widget Header (for Dragging & Minimize) --- */
+#vto-widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px 10px 25px; /* Adjust padding */
+    background-color: var(--vto-bg-medium);
+    border-bottom: 1px solid var(--vto-border-color);
+    cursor: grab; /* Indicate draggable */
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+#vto-widget-header:active {
+    cursor: grabbing;
+}
+#vto-widget-header h4 { /* Style title within header */
+    margin: 0; /* Reset margins */
+    font-size: 1.1em; /* Adjust size */
+    color: var(--vto-primary-color);
+    font-weight: 600;
+    text-align: left; /* Align left */
+    flex-grow: 1; /* Take available space */
+    /* Prevent text selection during drag */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+#vto-minimize-btn {
+    background: none;
+    border: none;
+    font-size: 1.5em; /* Make button larger */
+    line-height: 1;
+    padding: 0 5px;
+    cursor: pointer;
+    color: var(--vto-text-medium);
+    margin-left: 10px; /* Space from title */
+    width: auto; /* Override default button width */
+    margin-bottom: 0; /* Override default */
+    /* Prevent text selection */
+    user-select: none;
+    -webkit-user-select: none;
+}
+#vto-minimize-btn:hover {
+    color: var(--vto-text-dark);
+    transform: none; /* Override default button hover */
+    box-shadow: none;
+}
+
+/* --- NEW: Inner Content Wrapper (for scrolling) --- */
+#vto-widget-content {
+    padding: 20px 25px; /* Padding previously on main container */
+    overflow-y: auto; /* Allow content scrolling */
+    flex-grow: 1; /* Take remaining space */
+    max-height: calc(100vh - 90px - 45px); /* Adjust based on header height and initial top offset */
+    /* Will be hidden when minimized */
+}
+
+/* Scrollbar styling (Apply to inner content) */
+#vto-widget-content::-webkit-scrollbar { width: 8px; }
+#vto-widget-content::-webkit-scrollbar-track { background: var(--vto-bg-medium); border-radius: 4px;}
+#vto-widget-content::-webkit-scrollbar-thumb { background-color: var(--vto-primary-color); border-radius: 4px; border: 2px solid var(--vto-bg-medium); background-clip: padding-box; opacity: 0.8; }
+#vto-widget-content::-webkit-scrollbar-thumb:hover { opacity: 1; }
+
+
+/* --- NEW: Minimized State --- */
+#virtualTryOnWidget.vto-minimized {
+    height: 45px; /* Roughly header height */
+    width: 60px; /* Small width */
+    padding: 0;
+    overflow: hidden;
+    cursor: grab; /* Allow dragging minimized state */
+    box-shadow: var(--vto-box-shadow); /* Keep shadow */
+}
+#virtualTryOnWidget.vto-minimized #vto-widget-header {
+    cursor: grab; /* Always grab when minimized */
+    padding: 10px; /* Adjust padding */
+}
+#virtualTryOnWidget.vto-minimized #vto-widget-header h4 {
+    display: none; /* Hide title when minimized */
+}
+#virtualTryOnWidget.vto-minimized #vto-minimize-btn {
+    margin: 0 auto; /* Center button */
+    font-size: 1.2em; /* Slightly smaller icon */
+}
+#virtualTryOnWidget.vto-minimized #vto-widget-content {
+    display: none; /* Hide scrolling content */
+}
+
+
+/* Headings inside content */
+#vto-widget-content h4, #vto-widget-content h5 {
+    text-align: center;
+    margin-top: 0; /* Less top margin inside content */
+    margin-bottom: 20px;
+    color: var(--vto-primary-color);
+    font-weight: 600;
+    font-size: 1.2em;
+}
+#vto-widget-content h5 { font-size: 1.1em; margin-bottom: 15px; }
+
+
+/* Buttons General Styling (Target inside content) */
+#vto-widget-content button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: var(--vto-border-radius);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    text-align: center;
+}
+#vto-widget-content button:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+#vto-widget-content button:not(:disabled):active {
+    transform: translateY(0px);
+    box-shadow: none;
+}
+#vto-widget-content button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Specific Button Styles (Target inside content) */
+#vto-widget-content #vtoChoiceNew,
+#vto-widget-content #vtoChoiceHistory,
+#vto-widget-content #vtoUploadHumanBtn,
+#vto-widget-content #vtoUploadGarmentBtn {
+    background-color: var(--vto-bg-light);
+    color: var(--vto-primary-color);
+    border: 1px solid var(--vto-border-color);
+    font-weight: 600;
+}
+#vto-widget-content #vtoChoiceNew:not(:disabled):hover,
+#vto-widget-content #vtoChoiceHistory:not(:disabled):hover,
+#vto-widget-content #vtoUploadHumanBtn:not(:disabled):hover,
+#vto-widget-content #vtoUploadGarmentBtn:not(:disabled):hover {
+    background-color: var(--vto-bg-medium);
+    border-color: #d1d5db;
+}
+
+#vto-widget-content #vtoTryOnBtn {
+    background-image: var(--vto-gradient);
+    color: var(--vto-text-light);
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 12px 15px;
+    font-size: 1.05rem;
+}
+#vto-widget-content #vtoTryOnBtn:not(:disabled):hover {
+    background-image: linear-gradient(to right, #512DA8, #1976D2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#vto-widget-content #vtoCancelBtn,
+#vto-widget-content #vtoClearHistoryBtn {
+    color: var(--vto-text-dark);
+    font-weight: 500;
+}
+#vto-widget-content #vtoCancelBtn { background-color: var(--vto-warning-color); }
+#vto-widget-content #vtoClearHistoryBtn { background-color: var(--vto-error-color); color: var(--vto-bg-light); margin-top: 20px; }
+
+#vto-widget-content #vtoCancelBtn:not(:disabled):hover { background-color: #FBBF24; }
+#vto-widget-content #vtoClearHistoryBtn:not(:disabled):hover { background-color: #F87171; }
+
+#vto-widget-content #vtoBackButton,
+#vto-widget-content #vtoHistoryBackButton {
+    width: auto;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+    display: inline-block;
+    background-color: transparent;
+    color: var(--vto-text-medium);
+    border: 1px solid transparent;
+}
+#vto-widget-content #vtoBackButton:not(:disabled):hover,
+#vto-widget-content #vtoHistoryBackButton:not(:disabled):hover {
+    background-color: var(--vto-bg-medium);
+    border-color: var(--vto-border-color);
+    color: var(--vto-text-dark);
+    box-shadow: none;
+    transform: none;
+}
+
+#vto-widget-content #vtoRemoveHumanBtn,
+#vto-widget-content #vtoRemoveGarmentBtn {
+    background: none;
+    border: none;
+    color: var(--vto-error-color);
+    font-size: 0.8em;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 3px 0;
+    margin-top: 8px;
+    width: auto;
+    display: inline-block;
+    box-shadow: none;
+    text-align: left;
+    margin-bottom: 0;
+}
+#vto-widget-content #vtoRemoveHumanBtn:hover,
+#vto-widget-content #vtoRemoveGarmentBtn:hover {
+    color: #DC2626;
+    transform: none;
+    box-shadow: none;
+    background: none;
+}
+
+/* Form Elements (Target inside content) */
+#vto-widget-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--vto-text-medium);
+    font-size: 0.9rem;
+}
+#vto-widget-content input[type="text"],
+#vto-widget-content input[type="number"],
+#vto-widget-content select {
+    width: 100%;
+    padding: 9px 12px;
+    margin-bottom: 16px;
+    border: 1px solid var(--vto-border-color);
+    border-radius: var(--vto-border-radius);
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    background-color: var(--vto-bg-light);
+    color: var(--vto-text-dark);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+#vto-widget-content input[type="text"]:focus,
+#vto-widget-content input[type="number"]:focus,
+#vto-widget-content select:focus {
+    border-color: var(--vto-primary-color);
+    box-shadow: 0 0 0 3px rgba(94, 53, 177, 0.15);
+    outline: none;
+}
+#vto-widget-content input[type="number"] {
+     width: 90px;
+}
+#vto-widget-content select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234B5563%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 8px 10px;
+    padding-right: 30px;
+}
+
+/* Input Sections (Target inside content) */
+#vto-widget-content .vto-input-section {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--vto-border-color);
+}
+#vto-widget-content .vto-input-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 15px;
+}
+
+/* Image Previews (Target inside content) */
+#vto-widget-content #vtoHumanPreview,
+#vto-widget-content #vtoGarmentPreview {
+    display: none;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: contain;
+    margin-top: 15px;
+    border-radius: var(--vto-border-radius);
+    border: 1px solid var(--vto-border-color);
+    background-color: var(--vto-bg-medium);
+}
+
+/* Drop Zone (Target inside content) */
+#vto-widget-content #vtoGarmentDropZone {
+    display: none; /* Hide by default, JS shows initially */
+    border: 2px dashed var(--vto-accent-color);
+    padding: 30px 15px;
+    text-align: center;
+    margin-top: 15px;
+    border-radius: var(--vto-border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--vto-text-medium);
+    background-color: var(--vto-bg-light);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    line-height: 1.4;
+}
+#vto-widget-content #vtoGarmentDropZone.dragover {
+    background-color: #E3F2FD;
+    border-color: var(--vto-primary-color);
+    color: var(--vto-primary-color);
+}
+
+/* Status Area (Target inside content) */
+#vto-widget-content #vtoStatus {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+    min-height: 36px;
+    word-wrap: break-word;
+    padding: 8px 12px;
+    border-radius: var(--vto-border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+#vto-widget-content #vtoStatus[class*="vto-status-"] {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Status message variants */
+#vto-widget-content .vto-status-info { color: #3B82F6; background-color: #EFF6FF; }
+#vto-widget-content .vto-status-success { color: #059669; background-color: #ECFDF5; }
+#vto-widget-content .vto-status-warning { color: #D97706; background-color: #FFFBEB; }
+#vto-widget-content .vto-status-error { color: #DC2626; background-color: #FEF2F2; }
+#vto-widget-content .vto-status-loading { color: var(--vto-primary-color); background-color: #F3E8FF; }
+
+/* Loading Spinner (Target inside content) */
+#vto-widget-content .vto-spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--vto-primary-color);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 0.8s linear infinite;
+    display: none; /* Controlled by parent class */
+}
+#vto-widget-content .vto-status-loading .vto-spinner { display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Result Area (Target inside content) */
+#vto-widget-content #vtoResultArea {
+    margin-top: 25px;
+    border-top: 1px solid var(--vto-border-color);
+    padding-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+#vto-widget-content #vtoResultArea img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--vto-border-color);
+    border-radius: var(--vto-border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    background-color: var(--vto-bg-medium);
+}
+#vto-widget-content #vtoResultArea img[alt^="Loading"],
+#vto-widget-content #vtoResultArea img[alt^="Failed"] {
+     filter: grayscale(60%) opacity(80%);
+}
+
+/* History View (Target inside content) */
+#vto-widget-content #vtoHistoryList {
+    font-size: 0.9rem;
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top: 10px;
+}
+#vto-widget-content #vtoHistoryList .vto-history-entry {
+    border-bottom: 1px solid var(--vto-border-color);
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+#vto-widget-content #vtoHistoryList .vto-history-entry:last-child { border-bottom: none; margin-bottom: 0; }
+#vto-widget-content #vtoHistoryList .vto-history-previews { display: flex; gap: 10px; margin-bottom: 10px; }
+#vto-widget-content #vtoHistoryList .vto-history-previews img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid var(--vto-border-color); }
+#vto-widget-content #vtoHistoryList .vto-history-params { font-size: 0.75em; color: var(--vto-text-medium); margin-bottom: 10px; word-break: break-word; line-height: 1.3; }
+#vto-widget-content #vtoHistoryList .vto-history-results { display: flex; flex-wrap: wrap; gap: 8px; }
+#vto-widget-content #vtoHistoryList .vto-history-results img { max-width: 75px; border-radius: 4px; border: 1px solid var(--vto-border-color); }
+#vto-widget-content #vtoHistoryList div:empty { color: var(--vto-text-medium); text-align: center; padding: 25px; font-style: italic; }
+
+/* View Switching Default States (Target inside content) */
+#vto-widget-content #vtoInitialChoice { display: block; }
+#vto-widget-content #vtoMainContent,
+#vto-widget-content #vtoHistoryContent { display: none; }
